@@ -7,7 +7,7 @@ import 'package:trading_app/models/event.dart';
 
 Future<List<Event>> fetchCalendar() async {
   final response = await http.get(
-      Uri.parse('${dotenv.env['NEWS_URL']}/news/api/forex-factory/calendar/today'),
+      Uri.parse('${dotenv.env['NEWS_URL']}/news/api/forex-factory/calendar/week'),
       headers: {'Authorization': 'Api-Key ${dotenv.env['NEWS_API_KEY']}'});
 
   final parsed = (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
@@ -55,14 +55,14 @@ class EventList extends StatelessWidget {
       onRefresh: onRefresh,
       child: ListView(
         children: [
-          Container(
-            color: Colors.cyan[900],
-            child: Text(
-              DateFormat("d.M.yyyy").format(DateTime.now()),
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
+          // Container(
+          //   color: Colors.cyan[900],
+          //   child: Text(
+          //     DateFormat("d.M.yyyy").format(DateTime.now()),
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(color: Colors.white),
+          //   ),
+          // ),
           ...events.map((event) => EventCard(event)),
         ],
       ),
@@ -95,27 +95,18 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Kalender",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.cyan[900],
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: FutureBuilder(
-            future: events,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text(snapshot.error.toString());
-              }
-              if (snapshot.hasData) {
-                return EventList(snapshot.data!, handleRefresh);
-              }
-              return Center(child: const CircularProgressIndicator());
-            }),
-      ),
+      appBar: AppBar(title: Text("Kalender"), centerTitle: true),
+      body: FutureBuilder(
+          future: events,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            if (snapshot.hasData) {
+              return EventList(snapshot.data!, handleRefresh);
+            }
+            return Center(child: const CircularProgressIndicator());
+          }),
     );
   }
 }

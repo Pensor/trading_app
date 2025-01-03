@@ -28,53 +28,44 @@ class _KnowledgeState extends State<Knowledge> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Wissen"),
-          backgroundColor: Colors.cyan[900],
-          foregroundColor: Colors.white,
-          centerTitle: true,
+    return Scaffold(
+      appBar: AppBar(title: const Text("Wissen"), centerTitle: true),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1000),
+          child: FutureBuilder(
+              future: DefaultAssetBundle.of(context).loadString(currentContent),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Markdown(
+                    data: snapshot.data!,
+                    styleSheet: MarkdownStyleSheet(textScaler: TextScaler.linear(1.2)),
+                  );
+                }
+                return Center(child: const CircularProgressIndicator());
+              }),
         ),
-        body: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 1000),
-            child: FutureBuilder(
-                future: DefaultAssetBundle.of(context).loadString(currentContent),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Markdown(
-                      data: snapshot.data!,
-                      styleSheet: MarkdownStyleSheet(textScaler: TextScaler.linear(1.2)),
-                    );
-                  }
-                  return Center(child: const CircularProgressIndicator());
-                }),
+      ),
+      endDrawer: Drawer(
+        shape: Border(),
+        child: ListView(children: [
+          ListTile(
+            title: Text(
+              'Decoding the Algorithm',
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
-        endDrawer: SafeArea(
-            child: Drawer(
-                shape: Border(),
-                child: ListView(children: [
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.cyan[900],
-                    ),
-                    child: const Text(
-                      'Decoding the Algorithm',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  ...chapters.map((chapter) => ListTile(
-                        title: Text(chapter.label),
-                        onTap: () {
-                          setState(() {
-                            currentContent = chapter.content;
-                            Navigator.pop(context);
-                          });
-                        },
-                      )),
-                ]))),
+          Divider(height: 2),
+          ...chapters.map((chapter) => ListTile(
+                title: Text(chapter.label),
+                onTap: () {
+                  setState(() {
+                    currentContent = chapter.content;
+                    Navigator.pop(context);
+                  });
+                },
+              )),
+        ]),
       ),
     );
   }
