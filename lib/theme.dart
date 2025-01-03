@@ -6,9 +6,10 @@ ThemeData theme = ThemeData(
     foregroundColor: Colors.black,
     backgroundColor: Colors.white,
     shadowColor: Colors.grey,
-    elevation: 1,
+    scrolledUnderElevation: 1,
     surfaceTintColor: Colors.transparent,
   ),
   scaffoldBackgroundColor: Colors.white,
   drawerTheme: DrawerThemeData(backgroundColor: Colors.white),
+  navigationRailTheme: NavigationRailThemeData(backgroundColor: Colors.white),
 );
