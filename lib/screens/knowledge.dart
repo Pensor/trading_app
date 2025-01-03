@@ -29,7 +29,7 @@ class _KnowledgeState extends State<Knowledge> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Wissen"), centerTitle: true),
+      appBar: AppBar(title: const Text("Knowledge"), centerTitle: true),
       body: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 1000),
@@ -37,9 +37,11 @@ class _KnowledgeState extends State<Knowledge> {
               future: DefaultAssetBundle.of(context).loadString(currentContent),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Markdown(
-                    data: snapshot.data!,
-                    styleSheet: MarkdownStyleSheet(textScaler: TextScaler.linear(1.2)),
+                  return SafeArea(
+                    child: Markdown(
+                      data: snapshot.data!,
+                      styleSheet: MarkdownStyleSheet(textScaler: TextScaler.linear(1.2)),
+                    ),
                   );
                 }
                 return Center(child: const CircularProgressIndicator());

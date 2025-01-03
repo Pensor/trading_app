@@ -57,13 +57,15 @@ class EventList extends StatelessWidget {
           groupBy: (event) {
             return DateFormat.MMMMEEEEd().format(event.date);
           },
-          groupSeparatorBuilder: (String date) =>
-              ListTile(title: Text(date, textAlign: TextAlign.center)),
+          groupSeparatorBuilder: (String date) {
+            return ListTile(title: Text(date, textAlign: TextAlign.center));
+          },
           groupComparator: (value1, value2) {
             return DateFormat.MMMMEEEEd().parse(value1).weekday -
                 DateFormat.MMMMEEEEd().parse(value2).weekday;
           },
           itemBuilder: (context, event) => EventCard(event),
+          itemComparator: (event1, event2) => event1.date.hour - event2.date.hour,
         ));
   }
 }
@@ -93,7 +95,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Kalender"), centerTitle: true),
+      appBar: AppBar(title: Text("Calendar"), centerTitle: true),
       body: FutureBuilder(
           future: events,
           builder: (context, snapshot) {

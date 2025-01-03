@@ -13,11 +13,11 @@ class Home extends StatefulWidget {
 const destinations = [
   NavigationDestination(
     icon: Icon(Icons.menu_book),
-    label: 'Wissen',
+    label: 'Knowledge',
   ),
   NavigationDestination(
     icon: Icon(Icons.calendar_month),
-    label: 'Kalender',
+    label: 'Calendar',
   ),
 ];
 
