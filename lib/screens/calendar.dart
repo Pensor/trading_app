@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:trading_app/models/event.dart';
-import 'package:collection/collection.dart';
+import 'package:grouped_list/grouped_list.dart';
 
 Future<List<Event>> fetchCalendar() async {
   final response = await http.get(
@@ -15,7 +15,7 @@ Future<List<Event>> fetchCalendar() async {
 
   final events = parsed.map((json) => Event.fromJson(json)).where(Event.relevant).toList();
 
-  return events.reversed.toList();
+  return events;
 }
 
 class EventCard extends StatelessWidget {
@@ -49,38 +49,22 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupedEvents = groupBy(events, (item) => DateFormat.EEEE().format(item.date));
-
     return RefreshIndicator(
-      color: Colors.cyan[900],
-      onRefresh: onRefresh,
-      child: ListView.builder(
-        itemCount: groupedEvents.length,
-        itemBuilder: (BuildContext context, int index) {
-          String date = groupedEvents.keys.elementAt(index);
-          List<Event> events = groupedEvents[date]!;
-
-          return Column(
-            children: [
-              ListTile(
-                  title: Text(
-                date,
-                style: TextStyle(fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              )),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: events.length,
-                itemBuilder: (context, index) {
-                  return EventCard(events[index]);
-                },
-              ),
-            ],
-          );
-        },
-      ),
-    );
+        color: Colors.cyan[900],
+        onRefresh: onRefresh,
+        child: GroupedListView(
+          elements: events,
+          groupBy: (event) {
+            return DateFormat.MMMMEEEEd().format(event.date);
+          },
+          groupSeparatorBuilder: (String date) =>
+              ListTile(title: Text(date, textAlign: TextAlign.center)),
+          groupComparator: (value1, value2) {
+            return DateFormat.MMMMEEEEd().parse(value1).weekday -
+                DateFormat.MMMMEEEEd().parse(value2).weekday;
+          },
+          itemBuilder: (context, event) => EventCard(event),
+        ));
   }
 }
 
