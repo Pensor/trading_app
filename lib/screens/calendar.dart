@@ -1,22 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:trading_app/models/event.dart';
 import 'package:grouped_list/grouped_list.dart';
-
-Future<List<Event>> fetchCalendar() async {
-  final response = await http.get(
-      Uri.parse('${dotenv.env['NEWS_URL']}/news/api/forex-factory/calendar/week'),
-      headers: {'Authorization': 'Api-Key ${dotenv.env['NEWS_API_KEY']}'});
-
-  final parsed = (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
-
-  final events = parsed.map((json) => Event.fromJson(json)).where(Event.relevant).toList();
-
-  return events;
-}
+import 'package:trading_app/providers/events_provider.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard(this.event, {super.key});
@@ -55,14 +42,11 @@ class EventList extends StatelessWidget {
         child: GroupedListView(
           elements: events,
           groupBy: (event) {
-            return DateFormat.MMMMEEEEd().format(event.date);
+            return DateFormat('y-M-d').format(event.date);
           },
-          groupSeparatorBuilder: (String date) {
+          groupSeparatorBuilder: (String label) {
+            final date = DateFormat('EEEE, MMMM d').format(DateFormat('y-M-d').parse(label));
             return ListTile(title: Text(date, textAlign: TextAlign.center));
-          },
-          groupComparator: (value1, value2) {
-            return DateFormat.MMMMEEEEd().parse(value1).weekday -
-                DateFormat.MMMMEEEEd().parse(value2).weekday;
           },
           itemBuilder: (context, event) => EventCard(event),
           itemComparator: (event1, event2) => event1.date.hour - event2.date.hour,
@@ -70,43 +54,20 @@ class EventList extends StatelessWidget {
   }
 }
 
-class Calendar extends StatefulWidget {
+class Calendar extends ConsumerWidget {
   const Calendar({super.key});
 
   @override
-  State<Calendar> createState() => _CalendarState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final events = ref.watch(eventsProvider);
 
-class _CalendarState extends State<Calendar> {
-  late Future<List<Event>> events;
-
-  @override
-  void initState() {
-    super.initState();
-    events = fetchCalendar();
-  }
-
-  Future<void> handleRefresh() async {
-    setState(() {
-      events = fetchCalendar();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Calendar"), centerTitle: true),
-      body: FutureBuilder(
-          future: events,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            }
-            if (snapshot.hasData) {
-              return EventList(snapshot.data!, handleRefresh);
-            }
-            return Center(child: const CircularProgressIndicator());
-          }),
+      body: events.when(
+        data: (events) => EventList(events, () => ref.refresh(eventsProvider.future)),
+        error: (error, stack) => Text('Error: $error'),
+        loading: () => Center(child: const CircularProgressIndicator()),
+      ),
     );
   }
 }
