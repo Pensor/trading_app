@@ -31,7 +31,7 @@ class Event {
     return Event(
       name: json['Name'] as String,
       currency: json['Currency'] as String,
-      date: DateFormat('yyyy.MM.dd H:m:s').parse(json['Date']).subtract(Duration(hours: 1)),
+      date: DateFormat('yyyy.MM.dd H:m:s').parse(json['Date']).subtract(Duration(hours: 2)),
       actual: json['Actual'] as double,
       forecast: json['Forecast'] as double,
       previous: json['Previous'] as double,

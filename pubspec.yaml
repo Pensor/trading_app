@@ -43,6 +43,7 @@ dependencies:
   grouped_list: ^6.0.0
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -71,75 +72,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
-    - assets/content/algorithm.md
-    - assets/content/chapter-1.md
-    - assets/content/chapter-2.md
-    - assets/content/chapter-3.md
-    - assets/content/chapter-4.md
-    - assets/content/chapter-5.md
-    - assets/images/algo-1_1.jpeg
-    - assets/images/algo-1_2.jpeg
-    - assets/images/algo-1_3.jpeg
-    - assets/images/algo-1_4.jpeg
-    - assets/images/algo-1_5.jpeg
-    - assets/images/algo-1_6.jpeg
-    - assets/images/algo-1_7.jpeg
-    - assets/images/algo-1_8.jpeg
-    - assets/images/algo-2_1.jpeg
-    - assets/images/algo-2_2.jpeg
-    - assets/images/algo-2_3.jpeg
-    - assets/images/algo-2_4.jpeg
-    - assets/images/algo-2_5.jpeg
-    - assets/images/algo-2_6.jpeg
-    - assets/images/algo-2_7.jpeg
-    - assets/images/algo-2_8.jpeg
-    - assets/images/algo-2_9.jpeg
-    - assets/images/algo-2_10.jpeg
-    - assets/images/algo-2_11.jpeg
-    - assets/images/algo-2_12.jpeg
-    - assets/images/algo-2_13.jpeg
-    - assets/images/algo-3_1.jpeg
-    - assets/images/algo-3_2.jpeg
-    - assets/images/algo-3_3.jpeg
-    - assets/images/algo-3_4.jpeg
-    - assets/images/algo-3_5.jpeg
-    - assets/images/algo-3_6.jpeg
-    - assets/images/algo-3_7.jpeg
-    - assets/images/algo-3_8.jpeg
-    - assets/images/algo-3_9.jpeg
-    - assets/images/algo-3_10.jpeg
-    - assets/images/algo-3_11.jpeg
-    - assets/images/algo-3_12.jpeg
-    - assets/images/algo-4_1.jpeg
-    - assets/images/algo-4_2.jpeg
-    - assets/images/algo-4_3.jpeg
-    - assets/images/algo-4_4.jpeg
-    - assets/images/algo-4_5.jpeg
-    - assets/images/algo-4_6.jpeg
-    - assets/images/algo-4_7.jpeg
-    - assets/images/algo-4_8.jpeg
-    - assets/images/algo-4_9.jpeg
-    - assets/images/algo-4_10.jpeg
-    - assets/images/algo-4_11.jpeg
-    - assets/images/algo-4_12.jpeg
-    - assets/images/algo-4_13.jpeg
-    - assets/images/algo-4_14.jpeg
-    - assets/images/algo-5_1.jpeg
-    - assets/images/algo-5_2.jpeg
-    - assets/images/algo-5_3.jpeg
-    - assets/images/algo-5_4.jpeg
-    - assets/images/algo-5_5.jpeg
-    - assets/images/algo-5_6.jpeg
-    - assets/images/algo-5_7.jpeg
-    - assets/images/algo-5_8.jpeg
-    - assets/images/algo-5_9.jpeg
-    - assets/images/algo-5_10.jpeg
-    - assets/images/algo-5_11.jpeg
-    - assets/images/algo-5_12.jpeg
-    - assets/images/algo-5_13.jpeg
-    - assets/images/algo-5_14.jpeg
-    - assets/images/algo-5_15.jpeg
-    - assets/images/algo-5_16.jpeg
+    - assets/content/algorithm/
+    - assets/content/fractal-model/
+    - assets/content/gxt-model/
+    - assets/content/fvg-strategy.md
+    - assets/images/algorithm/
+    - assets/images/gxt/
+    - assets/images/fractal/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

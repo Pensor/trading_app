@@ -44,6 +44,12 @@ class EventList extends StatelessWidget {
           groupBy: (event) {
             return DateFormat('y-M-d').format(event.date);
           },
+          groupComparator: (event1, event2) {
+            final date1 = DateFormat('y-M-d').parse(event1);
+            final date2 = DateFormat('y-M-d').parse(event2);
+
+            return date1.day - date2.day;
+          },
           groupSeparatorBuilder: (String label) {
             final date = DateFormat('EEEE, MMMM d').format(DateFormat('y-M-d').parse(label));
             return ListTile(title: Text(date, textAlign: TextAlign.center));
