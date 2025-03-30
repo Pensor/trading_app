@@ -1,13 +1,24 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
-import 'package:trading_app/models/model.dart';
+import 'package:macos_ui/macos_ui.dart';
 
 class Models extends StatelessWidget {
   const Models({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [...models.map((model) => Text(model.name))],
-    );
+    if (Platform.isMacOS) {
+      return MacosScaffold(
+        toolBar: ToolBar(
+          centerTitle: true,
+          title: Text("Models", textAlign: TextAlign.center),
+        ),
+        children: [
+          ContentArea(builder: (context, scroll) => const Placeholder()),
+        ],
+      );
+    } else {
+      return const Placeholder();
+    }
   }
 }

@@ -13,6 +13,10 @@ Future<List<Event>> events(Ref ref) async {
       Uri.parse('${dotenv.env['NEWS_URL']}/news/api/forex-factory/calendar/week'),
       headers: {'Authorization': 'Api-Key ${dotenv.env['NEWS_API_KEY']}'});
 
+  if (response.statusCode == 401) {
+    throw Exception(jsonDecode(response.body)['message']);
+  }
+
   final parsed = (jsonDecode(response.body) as List).cast<Map<String, dynamic>>();
 
   final events = parsed.map((json) => Event.fromJson(json)).where(Event.relevant).toList();

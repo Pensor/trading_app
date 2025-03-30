@@ -1,4 +1,6 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:macos_ui/macos_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:trading_app/models/event.dart';
@@ -52,6 +54,16 @@ class EventList extends StatelessWidget {
           },
           groupSeparatorBuilder: (String label) {
             final date = DateFormat('EEEE, MMMM d').format(DateFormat('y-M-d').parse(label));
+            if (Platform.isMacOS) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  date,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              );
+            }
             return ListTile(title: Text(date, textAlign: TextAlign.center));
           },
           itemBuilder: (context, event) => EventCard(event),
@@ -66,14 +78,31 @@ class Calendar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final events = ref.watch(eventsProvider);
-
-    return Scaffold(
-      appBar: AppBar(title: Text("Calendar"), centerTitle: true),
-      body: events.when(
-        data: (events) => EventList(events, () => ref.refresh(eventsProvider.future)),
-        error: (error, stack) => Text('Error: $error'),
-        loading: () => Center(child: const CircularProgressIndicator()),
-      ),
-    );
+    if (Platform.isMacOS) {
+      return MacosScaffold(
+        toolBar: ToolBar(
+          centerTitle: true,
+          title: Text("Calendar", textAlign: TextAlign.center),
+        ),
+        children: [
+          ContentArea(builder: (context, scroll) {
+            return events.when(
+              data: (events) => EventList(events, () => ref.refresh(eventsProvider.future)),
+              error: (error, stack) => Center(child: Text('$error', textAlign: TextAlign.center)),
+              loading: () => Center(child: const ProgressCircle(radius: 20)),
+            );
+          })
+        ],
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(title: Text("Calendar"), centerTitle: true),
+        body: events.when(
+          data: (events) => EventList(events, () => ref.refresh(eventsProvider.future)),
+          error: (error, stack) => Center(child: Text('$error', textAlign: TextAlign.center)),
+          loading: () => Center(child: const CircularProgressIndicator()),
+        ),
+      );
+    }
   }
 }
