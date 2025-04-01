@@ -16,7 +16,7 @@ class ContentNavItem {
   const ContentNavItem({required this.label, required this.sections});
 }
 
-final macNavigation = [
+const macNavigation = [
   SidebarItem(
     leading: MacosIcon(CupertinoIcons.book),
     label: Text('Knowledge'),
@@ -40,7 +40,7 @@ final macNavigation = [
   ),
 ];
 
-final androidNavigation = [
+const androidNavigation = [
   NavigationDestination(
     icon: Icon(Icons.menu_book),
     label: 'Knowledge',
@@ -59,7 +59,7 @@ final androidNavigation = [
   ),
 ];
 
-final contentNavigation = [
+const contentNavigation = [
   ContentNavItem(label: 'Decoding the Algorithm', sections: [
     Chapter(label: "Chapter 1", content: "assets/content/algorithm/chapter-1.md"),
     Chapter(label: "Chapter 2", content: "assets/content/algorithm/chapter-2.md"),

@@ -6,29 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:trading_app/models/event.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:trading_app/providers/events_provider.dart';
-
-class EventCard extends StatelessWidget {
-  const EventCard(this.event, {super.key});
-
-  final Event event;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-        shape: RoundedRectangleBorder(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(DateFormat("HH:mm").format(event.date)),
-              Text(event.name),
-              Text(event.flag, textScaler: TextScaler.linear(2)),
-            ],
-          ),
-        ));
-  }
-}
+import 'package:trading_app/widgets/event_card.dart';
 
 class EventList extends StatelessWidget {
   const EventList(this.events, this.onRefresh, {super.key});

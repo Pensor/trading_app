@@ -27,7 +27,6 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.only(left: 10),
           builder: (context, scrollController) {
             return SidebarItems(
-              scrollController: scrollController,
               itemSize: SidebarItemSize.large,
               currentIndex: _selectedIndex,
               onChanged: (index) {
@@ -61,7 +60,7 @@ class _HomeState extends State<Home> {
                 Models(),
                 Journal(),
               ][_selectedIndex],
-          onSelectedIndexChange: (int index) {
+          onSelectedIndexChange: (index) {
             setState(() {
               _selectedIndex = index;
             });
