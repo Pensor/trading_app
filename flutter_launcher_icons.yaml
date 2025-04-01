@@ -30,4 +30,4 @@ flutter_launcher_icons:
 
   macos:
     generate: false
-    image_path: "assets/icons/AppIcon.icns"
+    image_path: "assets/icons/trading-macos.png"
